@@ -3,237 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚔️ Duel Arena</title>
-<style>
+<title>⚔️ Real Time PVP</title>
 
+<style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+font-family:Arial;
+background:linear-gradient(135deg,#141e30,#243b55);
 color:white;
 text-align:center;
+overflow:hidden;
 }
 
-h1{
-margin-top:10px;
-}
+h1{margin:10px;}
 
-.turn-indicator{
-font-size:18px;
-margin-bottom:10px;
-font-weight:bold;
-}
-
-.container{
+.arena{
 display:flex;
-justify-content:space-around;
-margin-top:10px;
+justify-content:space-between;
+padding:10px;
 }
 
 .player{
-width:45%;
+width:48%;
 background:rgba(255,255,255,0.08);
-padding:15px;
-border-radius:12px;
+padding:10px;
+border-radius:10px;
 }
 
-.hp-bar{
+.hpbar{
 background:#333;
+height:20px;
 border-radius:10px;
 overflow:hidden;
-height:20px;
-margin-top:10px;
+margin:10px 0;
 }
 
-.hp-fill{
+.hpfill{
 height:100%;
-background:limegreen;
+background:lime;
 width:100%;
-transition:width 0.4s ease;
+transition:0.3s;
 }
 
 .buttons{
-margin-top:15px;
+display:flex;
+flex-direction:column;
+gap:8px;
 }
 
 button{
-margin:5px;
-padding:10px 15px;
-font-size:14px;
+padding:12px;
 border:none;
 border-radius:8px;
-cursor:pointer;
 font-weight:bold;
+color:white;
+font-size:14px;
 }
 
-.attack{background:#e74c3c;color:white;}
-.heal{background:#27ae60;color:white;}
-.special{background:#f39c12;color:white;}
-.reset{background:#3498db;color:white;}
+.attack{background:#e74c3c;}
+.skill{background:#f39c12;}
+.heal{background:#27ae60;}
 
 button:disabled{
-opacity:0.5;
-cursor:not-allowed;
+opacity:0.4;
 }
 
 .log{
-margin-top:15px;
-height:120px;
-overflow-y:auto;
-background:rgba(0,0,0,0.4);
-padding:10px;
-border-radius:10px;
-font-size:13px;
+position:absolute;
+bottom:0;
+width:100%;
+background:rgba(0,0,0,0.5);
+height:100px;
+overflow:auto;
+font-size:12px;
+padding:5px;
 }
 
 .shake{
-animation:shake 0.3s;
+animation:shake 0.2s;
 }
 
 @keyframes shake{
-0%{transform:translateX(0);}
-25%{transform:translateX(-5px);}
-50%{transform:translateX(5px);}
-75%{transform:translateX(-5px);}
-100%{transform:translateX(0);}
+0%{transform:translateX(0)}
+25%{transform:translateX(-5px)}
+50%{transform:translateX(5px)}
+75%{transform:translateX(-5px)}
+100%{transform:translateX(0)}
 }
-
-@media(max-width:600px){
-.container{
-flex-direction:column;
-align-items:center;
-}
-.player{
-width:90%;
-margin-bottom:10px;
-}
-}
-
 </style>
 </head>
+
 <body>
 
-<h1>⚔️ Duel Arena ⚔️</h1>
-<div class="turn-indicator" id="turnIndicator">Giliran: Player 1</div>
+<h1>⚔️ REAL TIME PVP ⚔️</h1>
 
-<div class="container">
+<div class="arena">
 
-<div class="player" id="p1">
+<div class="player" id="p1box">
 <h2>Player 1</h2>
-<div class="hp-bar"><div class="hp-fill" id="hp1"></div></div>
-<p>HP: <span id="health1">100</span></p>
-</div>
-
-<div class="player" id="p2">
-<h2>Player 2</h2>
-<div class="hp-bar"><div class="hp-fill" id="hp2"></div></div>
-<p>HP: <span id="health2">100</span></p>
-</div>
-
-</div>
-
+<div class="hpbar"><div class="hpfill" id="hp1"></div></div>
+<p>HP: <span id="p1hp">100</span></p>
 <div class="buttons">
-<button class="attack" onclick="attack()">Attack</button>
-<button class="heal" onclick="heal()">Heal</button>
-<button class="special" onclick="special()">Special</button>
-<button class="reset" onclick="resetGame()">Reset</button>
+<button class="attack" onclick="attack(1)">Attack</button>
+<button class="skill" onclick="skill(1)">Skill</button>
+<button class="heal" onclick="heal(1)">Heal</button>
+</div>
+</div>
+
+<div class="player" id="p2box">
+<h2>Player 2</h2>
+<div class="hpbar"><div class="hpfill" id="hp2"></div></div>
+<p>HP: <span id="p2hp">100</span></p>
+<div class="buttons">
+<button class="attack" onclick="attack(2)">Attack</button>
+<button class="skill" onclick="skill(2)">Skill</button>
+<button class="heal" onclick="heal(2)">Heal</button>
+</div>
+</div>
+
 </div>
 
 <div class="log" id="log"></div>
 
 <script>
 
-let p1 = {hp:100, heal:false, special:false}
-let p2 = {hp:100, heal:false, special:false}
-let turn = 1
-let gameOver = false
+let p1={hp:100, cooldown:false}
+let p2={hp:100, cooldown:false}
+let gameOver=false
 
-function updateUI(){
-document.getElementById("health1").textContent = p1.hp
-document.getElementById("health2").textContent = p2.hp
-document.getElementById("hp1").style.width = p1.hp + "%"
-document.getElementById("hp2").style.width = p2.hp + "%"
-document.getElementById("turnIndicator").textContent = "Giliran: Player " + turn
+function update(){
+document.getElementById("p1hp").textContent=p1.hp
+document.getElementById("p2hp").textContent=p2.hp
+document.getElementById("hp1").style.width=p1.hp+"%"
+document.getElementById("hp2").style.width=p2.hp+"%"
 }
 
 function log(text){
-let logBox = document.getElementById("log")
-logBox.innerHTML += "<div>"+text+"</div>"
-logBox.scrollTop = logBox.scrollHeight
+let box=document.getElementById("log")
+box.innerHTML+=text+"<br>"
+box.scrollTop=box.scrollHeight
 }
 
-function shakePlayer(id){
-let el = document.getElementById(id)
+function shake(id){
+let el=document.getElementById(id)
 el.classList.add("shake")
-setTimeout(()=>el.classList.remove("shake"),300)
+setTimeout(()=>el.classList.remove("shake"),200)
 }
 
-function attack(){
+function attack(player){
 if(gameOver) return
 
-let dmg = Math.floor(Math.random()*10)+10
+let dmg=Math.floor(Math.random()*8)+8
 
-if(turn===1){
-p2.hp -= dmg
-shakePlayer("p2")
-log("⚔️ Player 1 menyerang -"+dmg+" HP")
-turn=2
-}else{
-p1.hp -= dmg
-shakePlayer("p1")
-log("⚔️ Player 2 menyerang -"+dmg+" HP")
-turn=1
+if(player===1 && !p1.cooldown){
+p2.hp-=dmg
+shake("p2box")
+log("⚔️ P1 -"+dmg)
+cooldown(p1)
+}else if(player===2 && !p2.cooldown){
+p1.hp-=dmg
+shake("p1box")
+log("⚔️ P2 -"+dmg)
+cooldown(p2)
 }
 
 checkWin()
-updateUI()
+update()
 }
 
-function heal(){
+function skill(player){
 if(gameOver) return
 
-let healAmount = Math.floor(Math.random()*15)+15
+let dmg=Math.floor(Math.random()*15)+20
 
-if(turn===1 && !p1.heal){
-p1.hp = Math.min(p1.hp+healAmount,100)
-p1.heal=true
-log("❤️ Player 1 heal +"+healAmount)
-turn=2
-}else if(turn===2 && !p2.heal){
-p2.hp = Math.min(p2.hp+healAmount,100)
-p2.heal=true
-log("❤️ Player 2 heal +"+healAmount)
-turn=1
-}else{
-log("❌ Heal sudah dipakai!")
-}
-
-updateUI()
-}
-
-function special(){
-if(gameOver) return
-
-let dmg = Math.floor(Math.random()*20)+25
-
-if(turn===1 && !p1.special){
-p2.hp -= dmg
-p1.special=true
-shakePlayer("p2")
-log("🔥 Player 1 SPECIAL -"+dmg+" HP")
-turn=2
-}else if(turn===2 && !p2.special){
-p1.hp -= dmg
-p2.special=true
-shakePlayer("p1")
-log("🔥 Player 2 SPECIAL -"+dmg+" HP")
-turn=1
-}else{
-log("❌ Special sudah dipakai!")
+if(player===1 && !p1.cooldown){
+p2.hp-=dmg
+shake("p2box")
+log("🔥 P1 SKILL -"+dmg)
+cooldown(p1,1500)
+}else if(player===2 && !p2.cooldown){
+p1.hp-=dmg
+shake("p1box")
+log("🔥 P2 SKILL -"+dmg)
+cooldown(p2,1500)
 }
 
 checkWin()
-updateUI()
+update()
+}
+
+function heal(player){
+if(gameOver) return
+
+let heal=Math.floor(Math.random()*10)+15
+
+if(player===1 && !p1.cooldown){
+p1.hp=Math.min(p1.hp+heal,100)
+log("❤️ P1 +"+heal)
+cooldown(p1)
+}else if(player===2 && !p2.cooldown){
+p2.hp=Math.min(p2.hp+heal,100)
+log("❤️ P2 +"+heal)
+cooldown(p2)
+}
+
+update()
+}
+
+function cooldown(player,time=800){
+player.cooldown=true
+setTimeout(()=>player.cooldown=false,time)
 }
 
 function checkWin(){
@@ -247,16 +226,7 @@ gameOver=true
 }
 }
 
-function resetGame(){
-p1 = {hp:100, heal:false, special:false}
-p2 = {hp:100, heal:false, special:false}
-turn=1
-gameOver=false
-document.getElementById("log").innerHTML=""
-updateUI()
-}
-
-updateUI()
+update()
 
 </script>
 
