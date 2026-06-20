@@ -1,359 +1,368 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Storyboard – Rahasia Anak Pendiam</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ayam Penyet Sukro – Pesan Sekarang</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --cream: #fdf6ec;
-    --ink: #1a1208;
-    --amber: #d48c2e;
-    --rust: #b84c2a;
-    --sage: #4a7c59;
-    --dusty: #8b7355;
-    --light: #f5ede0;
-    --panel-border: #c9a97a;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
-
-  header {
-    background: var(--ink); padding: 2rem 2.5rem 1.6rem;
-    position: relative; overflow: hidden;
-  }
-  header::before {
-    content: ''; position: absolute; inset: 0;
-    background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(212,140,46,0.06) 18px, rgba(212,140,46,0.06) 36px);
-  }
-  .header-inner { position: relative; }
-  .badge {
-    display: inline-block; background: var(--amber); color: var(--ink);
-    font-size: .65rem; font-weight: 500; letter-spacing: .12em;
-    text-transform: uppercase; padding: .3rem .8rem; border-radius: 2px; margin-bottom: .9rem;
-  }
-  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 5vw, 3rem); color: var(--cream); line-height: 1.15; margin-bottom: .5rem; }
-  header h1 em { color: var(--amber); font-style: italic; }
-  .meta-row { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; margin-top: 1rem; }
-  .meta-pill {
-    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15);
-    color: rgba(255,255,255,.75); font-size: .72rem; padding: .3rem .9rem;
-    border-radius: 20px; letter-spacing: .04em;
-  }
-  .meta-pill span { color: var(--amber); font-weight: 500; }
-
-  .chars-section { background: var(--light); border-bottom: 2px solid var(--panel-border); padding: 1.6rem 2.5rem; }
-  .chars-section h2 { font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; color: var(--dusty); margin-bottom: 1rem; }
-  .char-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-  .char-card { background: white; border: 1.5px solid var(--panel-border); border-radius: 6px; padding: 1rem; display: flex; align-items: flex-start; gap: .75rem; }
-  .char-avatar { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-  .char-info h3 { font-size: .82rem; font-weight: 500; color: var(--ink); }
-  .char-info p  { font-size: .7rem; color: var(--dusty); margin-top: .2rem; line-height: 1.4; }
-  .char-tag { display: inline-block; margin-top: .4rem; font-size: .6rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 3px; }
-
-  .timeline-bar { padding: 1.2rem 2.5rem; background: white; border-bottom: 2px solid var(--panel-border); }
-  .timeline-label { font-size: .65rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--dusty); margin-bottom: .7rem; }
-  .timeline-track { display: flex; gap: 3px; height: 28px; }
-  .tl-seg { display: flex; align-items: center; justify-content: center; border-radius: 3px; font-size: .6rem; font-weight: 500; color: white; letter-spacing: .04em; }
-
-  main { padding: 2rem 2.5rem 3rem; }
-  .section-label {
-    font-size: .7rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--dusty); margin-bottom: 1.2rem; display: flex; align-items: center; gap: .6rem;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--panel-border); }
-  .board { display: flex; flex-direction: column; gap: 2rem; }
-
-  .act-divider { display: flex; align-items: center; gap: 1rem; margin-bottom: -.3rem; }
-  .act-badge { background: var(--ink); color: var(--amber); font-family: 'Playfair Display', serif; font-size: .85rem; padding: .35rem 1rem; border-radius: 3px; white-space: nowrap; }
-  .act-line { flex: 1; height: 1.5px; background: var(--ink); }
-
-  .scene-row {
-    display: grid; grid-template-columns: 1fr 1fr; border: 2px solid var(--panel-border);
-    border-radius: 8px; overflow: hidden; box-shadow: 4px 4px 0 var(--panel-border); background: white;
-  }
-  .scene-visual {
-    position: relative; min-height: 230px;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 1.2rem; border-right: 2px solid var(--panel-border);
-  }
-  .scene-num {
-    position: absolute; top: 1rem; left: 1rem;
-    background: var(--ink); color: var(--cream);
-    font-family: 'Playfair Display', serif; font-size: 1.3rem;
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; z-index: 2;
-  }
-  .scene-time-badge {
-    position: absolute; top: 1rem; right: 1rem;
-    background: rgba(0,0,0,.55); color: #fff; font-size: .62rem;
-    padding: .2rem .6rem; border-radius: 3px; font-weight: 500; letter-spacing: .05em;
-  }
-  .illus { width: 100%; height: 100%; position: absolute; inset: 0; }
-  .scene-caption {
-    position: relative; z-index: 2;
-    background: rgba(0,0,0,.55); backdrop-filter: blur(2px); color: #fff;
-    border-radius: 4px; padding: .5rem .7rem;
-    font-family: 'Caveat', cursive; font-size: .95rem; line-height: 1.3;
-  }
-  .scene-info { padding: 1.3rem 1.5rem; display: flex; flex-direction: column; gap: .75rem; }
-  .scene-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; line-height: 1.3; }
-  .scene-setting { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: var(--dusty); font-weight: 500; letter-spacing: .04em; }
-  .info-grid { display: grid; gap: .5rem; }
-  .info-row { display: grid; grid-template-columns: 80px 1fr; gap: .5rem; }
-  .info-key { font-size: .65rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--dusty); padding-top: .05rem; }
-  .info-val { font-size: .78rem; line-height: 1.45; color: var(--ink); }
-  .dialog-box {
-    background: var(--light); border-left: 3px solid var(--amber); border-radius: 0 4px 4px 0;
-    padding: .6rem .8rem; font-size: .75rem; line-height: 1.55; color: var(--ink); font-style: italic;
-  }
-  .dialog-box strong { font-style: normal; color: var(--rust); font-size: .7rem; }
-  .value-chip {
-    display: inline-flex; align-items: center; gap: .3rem;
-    background: var(--sage); color: white; font-size: .65rem; font-weight: 500;
-    padding: .25rem .7rem; border-radius: 20px; letter-spacing: .04em; align-self: flex-start;
-  }
-  .cam-row { display: flex; flex-wrap: wrap; gap: .4rem; }
-  .cam-chip { background: var(--ink); color: var(--cream); font-size: .62rem; padding: .2rem .55rem; border-radius: 3px; letter-spacing: .03em; }
-
-  .bg-aula    { background: linear-gradient(160deg,#1a1208 0%,#2d1f0e 60%,#3d2b14 100%); }
-  .bg-kelas   { background: linear-gradient(160deg,#d4eaf7 0%,#b8d4e8 100%); }
-  .bg-sore    { background: linear-gradient(160deg,#1e2d3d 0%,#0d1a28 100%); }
-  .bg-panggung{ background: linear-gradient(160deg,#0d0a05 0%,#1f1206 60%,#3a2510 100%); }
-  .bg-penutup { background: linear-gradient(160deg,#0d0a05 0%,#1a1208 60%,#2a1a08 100%); }
-
-  @media(max-width:640px){
-    header,.chars-section,.timeline-bar,main{padding-left:1.2rem;padding-right:1.2rem;}
-    .scene-row{grid-template-columns:1fr;}
-    .scene-visual{border-right:none;border-bottom:2px solid var(--panel-border);}
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#C0392B;--red-dk:#922B21;--yellow:#F39C12;--cream:#FDF6EC;--brown:#5D2E0C;--text:#2C1A0E;--muted:#7B6555;--card:#fff;--border:#EAD9C8;--green:#27ae60}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+header{background:var(--brown);padding:0 1.2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.logo{display:flex;align-items:center;gap:.5rem}
+.logo-icon{width:36px;height:36px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.logo-text{color:#fff;line-height:1.1}
+.logo-text span{font-size:.65rem;color:var(--yellow);font-weight:500;display:block}
+.logo-text strong{font-size:.95rem;font-family:'Playfair Display',serif}
+.cart-btn{background:var(--red);color:#fff;border:none;border-radius:20px;padding:.4rem .9rem;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:background .2s}
+.cart-btn:hover{background:var(--red-dk)}
+.cart-count{background:var(--yellow);color:var(--brown);border-radius:50%;width:20px;height:20px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.hero{background:linear-gradient(135deg,var(--brown) 0%,#8B3A1A 55%,#C0392B 100%);padding:2rem 1.2rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.4rem);color:#fff;line-height:1.15;margin-bottom:.4rem}
+.hero h1 em{color:var(--yellow);font-style:normal}
+.hero p{color:rgba(255,255,255,.75);font-size:.85rem;margin-bottom:1rem}
+.steam{font-size:1.5rem;animation:rise 2.5s ease-in-out infinite;display:inline-block}
+@keyframes rise{0%,100%{transform:translateY(0) scale(1);opacity:.7}50%{transform:translateY(-8px) scale(1.1);opacity:1}}
+.badges{display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-top:.8rem}
+.badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:20px;padding:.25rem .7rem;font-size:.72rem;font-weight:500}
+.search-wrap{padding:1rem 1.2rem;background:var(--cream);border-bottom:1px solid var(--border)}
+.search-box{max-width:520px;margin:0 auto;position:relative}
+.search-box input{width:100%;padding:.7rem 1rem .7rem 2.6rem;border:2px solid var(--border);border-radius:12px;background:#fff;font-size:.88rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
+.search-box input:focus{border-color:var(--red)}
+.search-box .sicon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);font-size:.95rem;color:var(--muted);pointer-events:none}
+.categories{padding:.8rem 1.2rem .4rem;display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;max-width:960px;margin:0 auto}
+.categories::-webkit-scrollbar{display:none}
+.cat-btn{background:#fff;border:2px solid var(--border);border-radius:20px;padding:.35rem .9rem;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s}
+.cat-btn.active,.cat-btn:hover{background:var(--red);border-color:var(--red);color:#fff}
+.section-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--brown);padding:1rem 1.2rem .5rem;max-width:960px;margin:0 auto}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.9rem;padding:0 1.2rem 2rem;max-width:960px;margin:0 auto}
+.card{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
+.card-img{width:100%;height:130px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:linear-gradient(135deg,#F5CBA7,#E59866)}
+.card-body{padding:.8rem .9rem .9rem;flex:1;display:flex;flex-direction:column}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.4rem;margin-bottom:.3rem}
+.card-name{font-weight:600;font-size:.9rem;color:var(--text);line-height:1.3}
+.badge-hot{background:var(--yellow);color:var(--brown);border-radius:5px;font-size:.62rem;font-weight:700;padding:.1rem .35rem;letter-spacing:.04em;flex-shrink:0;margin-top:.1rem}
+.card-desc{font-size:.76rem;color:var(--muted);margin-bottom:.7rem;flex:1;line-height:1.5}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-size:1rem;font-weight:700;color:var(--red)}
+.add-btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:.38rem .8rem;font-size:.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.25rem;transition:background .2s,transform .1s}
+.add-btn:hover{background:var(--red-dk)}
+.add-btn:active{transform:scale(.95)}
+.no-result{text-align:center;color:var(--muted);padding:3rem 1rem;font-size:.9rem;display:none}
+.no-result.show{display:block}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+.cart-panel{position:fixed;right:0;top:0;bottom:0;width:min(400px,100vw);background:#fff;z-index:201;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,.15)}
+.cart-panel.show{transform:translateX(0)}
+.cart-head{padding:1rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cart-head h2{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--brown)}
+.close-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1}
+.nama-section{padding:.9rem 1.1rem;border-bottom:1px solid var(--border);background:#FFFBF5}
+.nama-section label{font-size:.8rem;font-weight:600;color:var(--brown);display:block;margin-bottom:.35rem}
+.nama-section input{width:100%;padding:.55rem .8rem;border:2px solid var(--border);border-radius:10px;font-size:.88rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;background:#fff}
+.nama-section input:focus{border-color:var(--red)}
+.catatan-section{padding:.9rem 1.1rem;border-bottom:1px solid var(--border);background:#FFFBF5}
+.catatan-section label{font-size:.8rem;font-weight:600;color:var(--brown);display:block;margin-bottom:.35rem}
+.catatan-section textarea{width:100%;padding:.55rem .8rem;border:2px solid var(--border);border-radius:10px;font-size:.85rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;background:#fff;resize:none;height:72px;line-height:1.5}
+.catatan-section textarea:focus{border-color:var(--red)}
+.catatan-section small{color:var(--muted);font-size:.72rem;margin-top:.25rem;display:block}
+.cart-items{flex:1;overflow-y:auto;padding:.9rem 1.1rem;display:flex;flex-direction:column;gap:.65rem}
+.empty-cart{text-align:center;color:var(--muted);padding:2.5rem 1rem;font-size:.88rem}
+.cart-item{display:flex;align-items:center;gap:.65rem;background:var(--cream);border-radius:11px;padding:.65rem}
+.ci-icon{font-size:1.6rem;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-weight:600;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-size:.78rem;color:var(--red);font-weight:600;margin-top:.1rem}
+.ci-controls{display:flex;align-items:center;gap:.35rem}
+.qty-btn{width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:#fff;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--red);transition:all .15s}
+.qty-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.qty-num{font-weight:700;font-size:.9rem;min-width:18px;text-align:center}
+.cart-foot{padding:.9rem 1.1rem;border-top:1px solid var(--border)}
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.total-label{font-weight:600;color:var(--muted);font-size:.9rem}
+.total-price{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--red);font-weight:700}
+.order-btn{width:100%;background:var(--red);color:#fff;border:none;border-radius:11px;padding:.8rem;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s}
+.order-btn:hover{background:var(--red-dk)}
+.order-btn:disabled{background:#ccc;cursor:not-allowed}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:20px;padding:1.8rem 1.6rem;max-width:320px;width:90%;text-align:center;transform:scale(.9);transition:transform .25s}
+.modal-bg.show .modal{transform:scale(1)}
+.modal-icon{font-size:2.8rem;margin-bottom:.7rem}
+.modal h3{font-family:'Playfair Display',serif;font-siem;color:var(--brown);margin-bottom:.4rem}
+.modal p{color:var(--muted);font-size:.84rem;line-height:1.6}
+.modal-order-id{background:var(--cream);border-radius:8px;padding:.4rem .8rem;font-size:.8rem;color:var(--brown);font-weight:600;margin:.7rem 0;display:inline-block}
+.modal-close{margin-top:1rem;background:var(--red);color:#fff;border:none;border-radius:10px;padding:.6rem 1.8rem;font-size:.88rem;font-weight:600;cursor:pointer}
+footer{background:var(--brown);color:rgba(255,255,255,.6);text-align:center;padding:1.2rem 1rem;font-size:.78rem}
+footer strong{color:var(--yellow)}
+@media(max-width:480px){.menu-grid{grid-template-columns:1fr 1fr;gap:.6rem;padding:0 .75rem 2rem}.card-img{height:100px;font-size:2.3rem}.card-body{padding:.6rem .65rem .7rem}.card-name{font-size:.82rem}.price{font-size:.9rem}.add-btn{padding:.32rem .6rem;font-size:.75rem}}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="header-inner">
-    <span class="badge">📋 Storyboard Revisi · 5 Scene</span>
-    <h1>Rahasia <em>Anak Pendiam</em></h1>
-    <div class="meta-row">
-      <span class="meta-pill">🎯 Kategori: <span>Pengembangan Diri</span></span>
-      <span class="meta-pill">💡 Fokus Nilai: <span>Percaya Diri</span></span>
-      <span class="meta-pill">⏱ Durasi: <span>2 Menit</span></span>
-      <span class="meta-pill">🎭 Tokoh: <span>4 Karakter</span></span>
-      <span class="meta-pill">🏛 Setting: <span>Aula &amp; Kelas</span></span>
+  <div class="logo">
+    <div class="logo-icon">🍗</div>
+    <div class="logo-text">
+      <span>Warung UMKM Palembang</span>
+      <strong>Ayam Penyet Sukro</strong>
     </div>
   </div>
+  <button class="cart-btn" onclick="toggleCart()">
+    🛒 Pesanan <span class="cart-count" id="cartCount">0</span>
+  </button>
 </header>
-
-<section class="chars-section">
-  <h2>👤 Daftar Tokoh</h2>
-  <div class="char-list">
-    <div class="char-card">
-      <div class="char-avatar" style="background:#fce8d5;">🧒</div>
-      <div class="char-info">
-        <h3>RARA</h3>
-        <p>Siswi pendiam, cerdas, suka menulis puisi. Selalu menghindari perhatian.</p>
-        <span class="char-tag" style="background:#f0e6d3;color:#8b5e2a;">Protagonis</span>
-      </div>
-    </div>
-    <div class="char-card">
-      <div class="char-avatar" style="background:#dff0e8;">👩‍🏫</div>
-      <div class="char-info">
-        <h3>BU LINDA</h3>
-        <p>Guru wali kelas. Perhatian, jeli melihat potensi murid yang tersembunyi.</p>
-        <span class="char-tag" style="background:#d5ede0;color:#2a6b46;">Mentor</span>
-      </div>
-    </div>
-    <div class="char-card">
-      <div class="char-avatar" style="background:#e8dff5;">🧑</div>
-      <div class="char-info">
-        <h3>DITO</h3>
-        <p>Teman sekelas Rara. Populer, ramah, mendukung dengan tulus.</p>
-        <span class="char-tag" style="background:#ded5f0;color:#5a2aaa;">Pendukung</span>
-      </div>
-    </div>
-    <div class="char-card">
-      <div class="char-avatar" style="background:#fce8e8;">👧</div>
-      <div class="char-info">
-        <h3>SISKA</h3>
-        <p>Murid populer yang awalnya meremehkan, akhirnya kagum.</p>
-        <span class="char-tag" style="background:#f5d5d5;color:#aa2a2a;">Katalis</span>
-      </div>
-    </div>
+<section class="hero">
+  <div class="steam">🍽️</div>
+  <h1>Ayam Penyet <em>Sukro</em></h1>
+  <p>Cita rasa asli Palembang · Pedas, gurih, bikin nagih!</p>
+  <div class="badges">
+    <span class="badge">📍 Palembang</span>
+    <span class="badge">⏰ Buka 08.00 – 21.00</span>
+    <span class="badge">🌶️ Sambal Istimewa</span>
   </div>
 </section>
-
-<div class="timeline-bar">
-  <div class="timeline-label">🎬 Alur Waktu — 5 Scene / 2 Menit</div>
-  <div class="timeline-track">
-    <div class="tl-seg" style="flex:24;background:#4a6fa5;">Scene 1 · 0:00–0:24</div>
-    <div class="tl-seg" style="flex:24;background:#b84c2a;">Scene 2 · 0:24–0:48</div>
-    <div class="tl-seg" style="flex:24;background:#5a3e8a;">Scene 3 · 0:48–1:12</div>
-    <div class="tl-seg" style="flex:28;background:#2d4a2d;">Scene 4 · 1:12–1:40</div>
-    <div class="tl-seg" style="flex:20;background:#d48c2e;">Scene 5 · 1:40–2:00</div>
+<div class="search-wrap">
+  <div class="search-box">
+    <span class="sicon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Cari menu makanan atau minuman..." oninput="renderMenu()"/>
   </div>
 </div>
-
-<main>
-  <div class="section-label">Papan Cerita · 5 Scene · 2 Menit</div>
-  <div class="board">
-
-    <!-- ACT 1 -->
-    <div class="act-divider">
-      <span class="act-badge">Babak I — Pengenalan (0:00–0:24)</span>
-      <div class="act-line"></div>
+<div class="categories">
+  <button class="cat-btn active" onclick="setCategory('semua',this)">🍴 Semua</button>
+  <button class="cat-btn" onclick="setCategory('nasi',this)">🍚 Nasi</button>
+  <button class="cat-btn" onclick="setCategory('mie',this)">🍜 Mie & Sup</button>
+  <button class="cat-btn" onclick="setCategory('lauk',this)">🍗 Lauk</button>
+  <button class="cat-btn" onclick="setCategory('minuman',this)">🥤 Minuman</button>
+</div>
+<div class="section-title" id="sectionTitle">Menu Pilihan</div>
+<div class="menu-grid" id="menuGrid"></div>
+<div class="no-result" id="noResult">😔 Menu tidak ditemukan.</div>
+<footer><strong>Ayam Penyet Sukro</strong> · Palembang · Harga dapat berubah sewaktu-waktu</footer>
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <h2>🛒 Pesanan Saya</h2>
+    <button class="close-btn" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="nama-section">
+    <label>👤 Nama Pemesan <span style="color:var(--red)">*</span></label>
+    <input type="text" id="namaPemesan" placeholder="Contoh: Budi Santoso" maxlength="50"/>
+  </div>
+  <div class="catatan-section">
+    <label>📝 Catatan Pesanan</label>
+    <textarea id="catatanPesanan" placeholder="Contoh: sambal pisah, tidak pakai lalapan, level pedas extra, meja nomor 3, dll..."></textarea>
+    <small>💡 Tulis keterangan tambahan agar pesanan lebih sesuai keinginan Anda</small>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="empty-cart">Belum ada pesanan.<br/>Yuk pilih menu dulu! 😊</div>
+  </div>
+  <div class="cart-foot">
+    <div class="total-row">
+      <span class="total-label">Total</span>
+      <span class="total-price" id="totalPrice">Rp 0</span>
     </div>
+    <button class="order-btn" id="orderBtn" onclick="placeOrder()">✅ Kirim Pesanan</button>
+  </div>
+</div>
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-icon">🎉</div>
+    <h3>Pesanan Terkirim!</h3>
+    <p>Terima kasih, <strong id="modalNama"></strong>!<br/>Pesanan Anda sedang diproses dapur kami.</p>
+    <div class="modal-order-id" id="modalOrderId"></div>
+    <p style="font-size:.78rem;color:var(--muted)">Mohon tunggu sebentar ya 😄</p>
+    <button class="modal-close" onclick="closeModal()">Tutup</button>
+  </div>
+</div>
+<script>
+const SUPA_URL='https://sbikrtvgopgakuiwvekb.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiaWtydHZnb3BnYWt1aXd2ZWtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MzcxMjksImV4cCI6MjA5NzUxMzEyOX0.VqHoTkpsehC2Jq7_gjJfbmLgTDuS1eVmDRVJgHVbthI';
 
-    <!-- SCENE 1 -->
-    <div class="scene-row">
-      <div class="scene-visual bg-aula">
-        <svg class="illus" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="400" height="230" fill="#1a1208"/>
-          <path d="M0 0 Q58 115 24 230 L0 230Z" fill="#6b2020" opacity=".85"/>
-          <path d="M400 0 Q342 115 376 230 L400 230Z" fill="#6b2020" opacity=".85"/>
-          <rect x="75" y="20" width="250" height="40" rx="4" fill="#c9a97a" opacity=".9"/>
-          <text x="200" y="35" text-anchor="middle" font-family="serif" font-size="10" fill="#1a1208" font-weight="bold">📋 LOMBA BACA PUISI</text>
-          <text x="200" y="50" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#3a2005">Daftarkan dirimu sekarang!</text>
-          <!-- excited crowd -->
-          <g fill="#2a1c0a">
-            <ellipse cx="130" cy="148" rx="17" ry="23"/><ellipse cx="168" cy="140" rx="15" ry="21"/>
-            <ellipse cx="205" cy="146" rx="15" ry="21"/><ellipse cx="242" cy="141" rx="15" ry="21"/>
-            <ellipse cx="278" cy="148" rx="17" ry="23"/>
-          </g>
-          <!-- speech bubbles -->
-          <ellipse cx="155" cy="112" rx="22" ry="12" fill="#c9a97a" opacity=".8"/>
-          <text x="155" y="116" text-anchor="middle" font-size="9" fill="#1a1208">Aku mau!</text>
-          <ellipse cx="252" cy="107" rx="24" ry="12" fill="#c9a97a" opacity=".8"/>
-          <text x="252" y="111" text-anchor="middle" font-size="9" fill="#1a1208">Daftar yuk!</text>
-          <!-- Rara alone corner -->
-          <circle cx="44" cy="192" r="15" fill="#f5c89a"/>
-          <path d="M32 188 Q44 174 56 188" fill="#3d2005"/>
-          <rect x="32" y="207" width="24" height="20" rx="3" fill="#4a6fa5" opacity=".9"/>
-          <rect x="52" y="210" width="15" height="19" rx="2" fill="#fff" stroke="#c9a97a" stroke-width="1" transform="rotate(-12,59,219)"/>
-          <text x="44" y="228" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#c9a97a">Rara</text>
-          <path d="M200 0 L128 168 L272 168Z" fill="#fff8e0" opacity=".05"/>
-        </svg>
-        <span class="scene-num">1</span>
-        <span class="scene-time-badge">0:00 – 0:24</span>
-        <div class="scene-caption">Aula riuh lomba puisi — Rara menyingkir ke pojok sendirian</div>
-      </div>
-      <div class="scene-info">
-        <div class="scene-setting">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          Aula Sekolah — Siang Hari
-        </div>
-        <div class="scene-title">Semua Bersemangat, Rara Bersembunyi</div>
-        <div class="info-grid">
-          <div class="info-row">
-            <span class="info-key">Aksi</span>
-            <span class="info-val">Pengumuman lomba baca puisi dipasang di aula. Siswa antusias — Dito dan Siska langsung mendaftar. Rara menjauh ke pojok, memeluk buku catatannya, mengamati dari jauh.</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Tokoh</span>
-            <span class="info-val">Rara (pojok), Dito &amp; Siska (antusias di keramaian)</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Emosi</span>
-            <span class="info-val">Rara: cemas &amp; minder. Siswa lain: bersemangat.</span>
-          </div>
-        </div>
-        <div class="dialog-box">
-          <strong>NARASI (VO Rara):</strong> "Semua orang ingin tampil… kecuali aku. Puisiku hanya milikku sendiri."
-        </div>
-        <div class="cam-row">
-          <span class="cam-chip">📷 Wide Shot Aula</span>
-          <span class="cam-chip">🎥 Pan ke Rara di pojok</span>
-          <span class="cam-chip">🔊 Suara keramaian memudar</span>
-          <span class="cam-chip">🎵 Musik lembut masuk</span>
-        </div>
-        <span class="value-chip">🔍 Perkenalan Konflik Batin</span>
-      </div>
-    </div>
+const MENUS=[
+  {id:1,name:'Nasi Ayam Penyet',cat:'nasi',icon:'🍗',price:18000,hot:true,desc:'Nasi + ayam penyet + sambal khas Sukro + lalapan'},
+  {id:2,name:'Nasi Ayam Bakar',cat:'nasi',icon:'🔥',price:20000,hot:true,desc:'Nasi + ayam bakar bumbu kecap + sambal + lalapan'},
+  {id:3,name:'Nasi Lele Goreng',cat:'nasi',icon:'🐟',price:17000,hot:false,desc:'Nasi + lele segar digoreng garing + sambal + lalapan'},
+  {id:4,name:'Nasi Lele Bakar',cat:'nasi',icon:'🐟',price:18000,hot:false,desc:'Nasi + lele bakar bumbu meresap + sambal + lalapan'},
+  {id:5,name:'Nasi Nila Goreng',cat:'nasi',icon:'🐠',price:20000,hot:false,desc:'Nasi + ikan nila goreng gurih + sambal + lalapan'},
+  {id:6,name:'Nasi Nila Bakar',cat:'nasi',icon:'🐠',price:22000,hot:false,desc:'Nasi + ikan nila bakar bumbu rempah + sambal + lalapan'},
+  {id:7,name:'Nasi Goreng Ayam',cat:'nasi',icon:'🍳',price:16000,hot:true,desc:'Nasi goreng dengan potongan ayam, telur, sayuran pilihan'},
+  {id:8,name:'Nasi Goreng Ati',cat:'nasi',icon:'🍳',price:15000,hot:false,desc:'Nasi goreng dengan ati ampela bumbu kecap'},
+  {id:9,name:'Nasi Goreng Teri',cat:'nasi',icon:'🍳',price:14000,hot:false,desc:'Nasi goreng dengan teri medan renyah, pedas gurih'},
+  {id:10,name:'Nasi Pindang Patin',cat:'nasi',icon:'🍲',price:22000,hot:true,desc:'Nasi + pindang patin kuah kuning khas Palembang'},
+  {id:11,name:'Nasi Soto Ayam',cat:'nasi',icon:'🥣',price:16000,hot:false,desc:'Nasi + soto ayam kuah bening dengan tauge & bawang goreng'},
+  {id:12,name:'Mie Tumis Ayam',cat:'mie',icon:'🍜',price:15000,hot:false,desc:'Mie kuning ditumis dengan potongan ayam & sayuran'},
+  {id:13,name:'Mie Tumis Ati',cat:'mie',icon:'🍜',price:14000,hot:false,desc:'Mie kuning ditumis dengan ati ampela & bumbu kecap'},
+  {id:14,name:'Mie Tumis Teri',cat:'mie',icon:'🍜',price:13000,hot:false,desc:'Mie kuning ditumis dengan teri medan dan cabai'},
+  {id:15,name:'Tekwan',cat:'mie',icon:'🥣',price:16000,hot:true,desc:'Sup baso ikan khas Palembang dengan kuah kaldu udang'},
+  {id:16,name:'Tekwan + Mie',cat:'mie',icon:'🥣',price:18000,hot:true,desc:'Tekwan komplit dengan tambahan mie bihun'},
+  {id:17,name:'Model Tahu',cat:'mie',icon:'🥣',price:16000,hot:false,desc:'Model tahu kuah kuning khas Palembang, gurih dan segar'},
+  {id:18,name:'Model Tahu + Mie',cat:'mie',icon:'🥣',price:18000,hot:false,desc:'Model tahu komplit dengan tambahan mie bihun'},
+  {id:19,name:'Ayam Penyet',cat:'lauk',icon:'🍗',price:13000,hot:true,desc:'Ayam penyet tanpa nasi + sambal khas Sukro'},
+  {id:20,name:'Ayam Bakar',cat:'lauk',icon:'🔥',price:15000,hot:false,desc:'Ayam bakar kecap tanpa nasi + lalapan'},
+  {id:21,name:'Lele Goreng',cat:'lauk',icon:'🐟',price:12000,hot:false,desc:'Lele goreng garing tanpa nasi'},
+  {id:22,name:'Lele Bakar',cat:'lauk',icon:'🐟',price:13000,hot:false,desc:'Lele bakar bumbu rempah tanpa nasi'},
+  {id:23,name:'Nila Goreng',cat:'lauk',icon:'🐠',price:15000,hot:false,desc:'Ikan nila goreng gurih tanpa nasi'},
+  {id:24,name:'Nila Bakar',cat:'lauk',icon:'🐠',price:17000,hot:false,desc:'Ikan nila bakar bumbu tanpa nasi'},
+  {id:25,name:'Soto Ayam',cat:'lauk',icon:'🥣',price:12000,hot:false,desc:'Semangkuk soto ayam kuah bening'},
+  {id:26,name:'Tahu',cat:'lauk',icon:'🟡',price:3000,hot:false,desc:'Tahu goreng, per potong'},
+  {id:27,name:'Tempe',cat:'lauk',icon:'🟫',price:3000,hot:false,desc:'Tempe goreng, per potong'},
+  {id:28,name:'Es Teller',cat:'minuman',icon:'🥤',price:10000,hot:true,desc:'Es teller segar dengan alpukat, kelapa, kolang-kaling'},
+  {id:29,name:'Es Oyen',cat:'minuman',icon:'🥤',price:9000,hot:false,desc:'Es campur ala Bandung dengan cincau & biji selasih'},
+  {id:30,name:'Es Campur',cat:'minuman',icon:'🧊',price:9000,hot:false,desc:'Es campur aneka topping segar pilihan'},
+  {id:31,name:'Es Kukubima',cat:'minuman',icon:'🥤',price:5000,hot:false,desc:'Minuman energi Kukubima disajikan dingin dengan es'},
+  {id:32,name:'Es Extra Jos',cat:'minuman',icon:'⚡',price:5000,hot:false,desc:'Minuman energi Extra Jos disajikan dengan es batu'},
+  {id:33,name:'Es Extra Jos + Susu',cat:'minuman',icon:'⚡',price:7000,hot:false,desc:'Extra Jos dipadukan dengan susu kental manis'},
+  {id:34,name:'Es Cappucino Cincau',cat:'minuman',icon:'☕',price:8000,hot:true,desc:'Cappucino dingin dengan cincau hitam segar'},
+  {id:35,name:'Kopi Susu',cat:'minuman',icon:'☕',price:8000,hot:false,desc:'Kopi robusta Palembang dengan susu kental manis'},
+  {id:36,name:'Kopi Hitam',cat:'minuman',icon:'☕',price:6000,hot:false,desc:'Kopi hitam robusta khas Palembang'},
+  {id:37,name:'Es Campah',cat:'minuman',icon:'🍋',price:7000,hot:false,desc:'Minuman segar rasa campur-campah khas warung'},
+  {id:38,name:'Teh Botol',cat:'minuman',icon:'🍵',price:5000,hot:false,desc:'Teh botol sosro dingin, menyegarkan'},
+  {id:39,name:'Nutrisari',cat:'minuman',icon:'🍊',price:5000,hot:false,desc:'Minuman serbuk buah Nutrisari, dingin segar'},
+  {id:40,name:'Marimas',cat:'minuman',icon:'🍹',price:4000,hot:false,desc:'Minuman serbuk aneka rasa buah Marimas'},
+  {id:41,name:'Sisri',cat:'minuman',icon:'🥤',price:4000,hot:false,desc:'Minuman serbuk Sisri rasa buah pilihan'},
+  {id:42,name:'Beng Beng Drink',cat:'minuman',icon:'🍫',price:6000,hot:false,desc:'Minuman cokelat Beng Beng siap minum'},
+  {id:43,name:'Hilo',cat:'minuman',icon:'🥛',price:6000,hot:false,desc:'Minuman susu HiLo, sehat dan menyegarkan'},
+  {id:44,name:'Milo',cat:'minuman',icon:'🥛',price:6000,hot:false,desc:'Minuman cokelat malt Milo'},
+  {id:45,name:'Tora Moka',cat:'minuman',icon:'☕',price:6000,hot:false,desc:'Minuman kopi moka Tora dengan rasa manis lembut'},
+  {id:46,name:'Pop Ice',cat:'minuman',icon:'🧋',price:7000,hot:true,desc:'Pop Ice aneka rasa, dingin blended menyegarkan'},
+];
 
-    <!-- ACT 2 -->
-    <div class="act-divider">
-      <span class="act-badge">Babak II — Konflik (0:24–1:12)</span>
-      <div class="act-line"></div>
-    </div>
+let cart={},activeCat='semua';
+const fmt=n=>'Rp '+n.toLocaleString('id-ID');
 
-    <!-- SCENE 2 -->
-    <div class="scene-row">
-      <div class="scene-visual bg-kelas">
-        <svg class="illus" viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="400" height="230" fill="#d4eaf7"/>
-          <rect x="268" y="12" width="112" height="82" rx="4" fill="#a8d4ee" opacity=".45" stroke="#7ab8d9" stroke-width="2"/>
-          <line x1="324" y1="12" x2="324" y2="94" stroke="#7ab8d9" stroke-width="1.5" opacity=".6"/>
-          <line x1="268" y1="53" x2="380" y2="53" stroke="#7ab8d9" stroke-width="1.5" opacity=".6"/>
-          <path d="M380 12 L268 230" stroke="#fff8c0" stroke-width="28" opacity=".12"/>
-          <!-- blackboard -->
-          <rect x="10" y="15" width="210" height="82" rx="3" fill="#2d4a2d"/>
-          <text x="115" y="40" text-anchor="middle" font-family="serif" font-size="10" fill="#a8c8a0">PESERTA LOMBA PUISI</text>
-          <text x="115" y="58" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#fff">1. Dito    2. Siska</text>
-          <text x="115" y="76" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#ffdd88">3. ??? (kosong)</text>
-          <!-- desks -->
-          <rect x="25" y="132" width="55" height="30" rx="3" fill="#c9a97a" opacity=".5"/>
-          <rect x="96" y="132" width="55" height="30" rx="3" fill="#c9a97a" opacity=".5"/>
-          <rect x="167" y="132" width="55" height="30" rx="3" fill="#c9a97a" opacity=".5"/>
-          <rect x="238" y="132" width="55" height="30" rx="3" fill="#c9a97a" opacity=".5"/>
-          <!-- Bu Linda gesturing to Rara -->
-          <circle cx="220" cy="112" r="15" fill="#e8c49a"/>
-          <path d="M208 109 Q220 95 232 109" fill="#2d4a2d"/>
-          <rect x="207" y="127" width="26" height="48" rx="3" fill="#2d4a2d"/>
-          <line x1="207" y1="136" x2="178" y2="150" stroke="#e8c49a" stroke-width="3.5" stroke-linecap="round"/>
-          <text x="220" y="186" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#1a4a2d">Bu Linda</text>
-          <!-- Rara shocked -->
-          <circle cx="60" cy="117" r="15" fill="#f5c89a" stroke="#d4956a" stroke-width="1.5"/>
-          <path d="M47 113 Q60 99 73 113" fill="#3d2005"/>
-          <ellipse cx="60" cy="126" rx="4" ry="5" fill="#c0502a" opacity=".8"/>
-          <rect x="48" y="132" width="24" height="44" rx="3" fill="#4a6fa5"/>
-          <text x="60" y="186" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#1a4a2d">Rara 😮</text>
-          <!-- Dito -->
-          <circle cx="342" cy="120" r="13" fill="#e8d4a8"/>
-          <rect x="330" y="133" width="24" height="42" rx="3" fill="#c0392b" opacity=".8"/>
-          <text x="342" y="186" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#1a4a2d">Dito 👍</text>
-          <!-- Siska -->
-          <circle cx="312" cy="122" r="12" fill="#f5b8b8"/>
-          <rect x="301" y="134" width="22" height="42" rx="3" fill="#8e44ad" opacity=".8"/>
-          <text x="312" y="186" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#1a4a2d">Siska 🙄</text>
-        </svg>
-        <span class="scene-num">2</span>
-        <span class="scene-time-badge">0:24 – 0:48</span>
-        <div class="scene-caption">Bu Linda membaca buku puisi Rara & langsung mendaftarkannya — Rara panik</div>
+function renderMenu(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const grid=document.getElementById('menuGrid');
+  const no=document.getElementById('noResult');
+  grid.innerHTML='';
+  const filtered=MENUS.filter(m=>{
+    const mc=activeCat==='semua'||m.cat===activeCat;
+    const mq=!q||m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);
+    return mc&&mq;
+  });
+  if(!filtered.length){no.classList.add('show');return;}
+  no.classList.remove('show');
+  filtered.forEach(m=>{
+    grid.innerHTML+=`<div class="card" id="card-${m.id}">
+      <div class="card-img">${m.icon}</div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-name">${m.name}</span>
+          ${m.hot?'<span class="badge-hot">FAVORIT</span>':''}
+        </div>
+        <p class="card-desc">${m.desc}</p>
+        <div class="card-footer">
+          <span class="price">${fmt(m.price)}</span>
+          <button class="add-btn" onclick="addToCart(${m.id})">+ Tambah</button>
+        </div>
       </div>
-      <div class="scene-info">
-        <div class="scene-setting">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Ruang Kelas — Jam Pelajaran
-        </div>
-        <div class="scene-title">Bu Linda Menemukan Rahasia Rara</div>
-        <div class="info-grid">
-          <div class="info-row">
-            <span class="info-key">Aksi</span>
-            <span class="info-val">Saat pelajaran, Bu Linda melintas dan sekilas membaca buku puisi Rara — matanya berbinar. Ia langsung mengumumkan Rara sebagai peserta ke-3. Semua kelas menoleh. Rara panik dan menolak. Siska berbisik sinis, Dito bertepuk tangan tulus.</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Tokoh</span>
-            <span class="info-val">Semua 4 tokoh hadir dalam scene ini</span>
-          </div>
-          <div class="info-row">
-            <span class="info-key">Konflik</span>
-            <span class="info-val">Rara: takut dinilai &amp; ditertawakan orang banyak.</span>
-          </div>
-        </div>
-        <div class="dialog-box">
-          <strong>BU LINDA:</strong> "Rara, puisimu luar biasa. Kamu akan mewakili kelas kita!"<br/>
-          <strong>RARA (panik berbisik):</strong> "Tapi Bu… aku tidak bisa tampil di depan orang…"<br/>
-          <strong>SISKA (bergumam):</strong> "Dia? Ngomong aja pelan banget…"<br/>
-          <strong>DITO:</strong> "Ayo Ra, kamu pasti bisa!"
-        </div>
-        <div class="cam-row">
-          <span class="cam-chip">📷 Close-up Buku Puisi</span>
-          <span class="cam-chip">🎥 Rack Focus ke Rara</span>
-          <span class="cam-chip">🔊 Bisik kelas + hening</span>
-        </div>
-        <span class="value-chip">⚡ Konflik Utama: Takut vs Potensi</span>
-      </div>
-    </div>
+    </div>`;
+  });
+}
 
-    <!-- S
+function setCategory(cat,el){
+  activeCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const t={semua:'Menu Pilihan',nasi:'Menu Nasi',mie:'Mie & Sup Khas Palembang',lauk:'Lauk Pilihan',minuman:'Aneka Minuman'};
+  document.getElementById('sectionTitle').textContent=t[cat]||'Menu';
+  renderMenu();
+}
+
+function addToCart(id){
+  cart[id]=(cart[id]||0)+1;
+  updateCartUI();
+  const btn=document.querySelector(`#card-${id} .add-btn`);
+  if(btn){btn.textContent='✓ Ditambahkan';btn.style.background='#27ae60';setTimeout(()=>{btn.textContent='+ Tambah';btn.style.background='';},900);}
+}
+
+function changeQty(id,d){
+  cart[id]=(cart[id]||0)+d;
+  if(cart[id]<=0)delete cart[id];
+  updateCartUI();
+}
+
+function updateCartUI(){
+  const total=Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cartCount').textContent=total;
+  renderCartItems();
+}
+
+function renderCartItems(){
+  const box=document.getElementById('cartItems');
+  const keys=Object.keys(cart);
+  if(!keys.length){
+    box.innerHTML='<div class="empty-cart">Belum ada pesanan.<br/>Yuk pilih menu dulu! 😊</div>';
+    document.getElementById('totalPrice').textContent='Rp 0';
+    return;
+  }
+  let html='',grand=0;
+  keys.forEach(id=>{
+    const m=MENUS.find(x=>x.id==id);if(!m)return;
+    const sub=m.price*cart[id];grand+=sub;
+    html+=`<div class="cart-item">
+      <span class="ci-icon">${m.icon}</span>
+      <div class="ci-info">
+        <div class="ci-name">${m.name}</div>
+        <div class="ci-price">${fmt(sub)}</div>
+      </div>
+      <div class="ci-controls">
+        <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+        <span class="qty-num">${cart[id]}</span>
+        <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+      </div>
+    </div>`;
+  });
+  box.innerHTML=html;
+  document.getElementById('totalPrice').textContent=fmt(grand);
+}
+
+function toggleCart(){
+  document.getElementById('cartPanel').classList.toggle('show');
+  document.getElementById('overlay').classList.toggle('show');
+  document.body.style.overflow=document.getElementById('cartPanel').classList.contains('show')?'hidden':'';
+}
+
+async function placeOrder(){
+  const nama=document.getElementById('namaPemesan').value.trim();
+  const catatan=document.getElementById('catatanPesanan').value.trim();
+  if(!nama){document.getElementById('namaPemesan').focus();document.getElementById('namaPemesan').style.borderColor='var(--red)';alert('Mohon isi nama pemesan terlebih dahulu ya!');return;}
+  if(!Object.keys(cart).length){alert('Pilih menu dulu ya!');return;}
+  const btn=document.getElementById('orderBtn');
+  btn.disabled=true;btn.textContent='⏳ Mengirim...';
+  const orderId='SKR-'+Date.now().toString().slice(-6);
+  const items=Object.keys(cart).map(id=>{
+    const m=MENUS.find(x=>x.id==id);
+    return{name:m.name,qty:cart[id],price:m.price,subtotal:m.price*cart[id]};
+  });
+  const total=items.reduce((a,b)=>a+b.subtotal,0);
+  try{
+    const res=await fetch(`${SUPA_URL}/rest/v1/orders`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({id:orderId,nama,catatan:catatan||'-',items,total,status:'Baru'})
+    });
+    if(!res.ok)throw new Error('Gagal');
+    cart={};
+    document.getElementById('namaPemesan').value='';
+    document.getElementById('catatanPesanan').value='';
+    updateCartUI();
+    toggleCart();
+    document.getElementById('modalNama').textContent=nama;
+    document.getElementById('modalOrderId').textContent='No. Pesanan: '+orderId;
+    setTimeout(()=>document.getElementById('modalBg').classList.add('show'),200);
+  }catch(e){
+    alert('Gagal mengirim pesanan. Periksa koneksi internet Anda dan coba lagi.');
+  }finally{
+    btn.disabled=false;btn.textContent='✅ Kirim Pesanan';
+  }
+}
+
+function closeModal(){document.getElementById('modalBg').classList.remove('show');}
+renderMenu();
+</script>
+</body>
+</html>
